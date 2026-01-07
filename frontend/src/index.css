@@ -1,0 +1,18 @@
+/* Tailwind Imports */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* SPD Portal background gradient */
+body {
+  background: linear-gradient(
+    to bottom right,
+    #F7E7CE, /* Champagne */
+    #A52A2A, /* Auburn */
+    #9F8170, /* Beaver */
+    #654321  /* Dark Brown */
+  );
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+}
