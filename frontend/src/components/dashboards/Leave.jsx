@@ -20,6 +20,9 @@ const leaveTypes = [
   "Compassionate Leave",
 ];
 
+// ✅ Use Vite env variable for backend URL
+const API_BASE = import.meta.env.VITE_API_URL;
+
 export default function Leave({ staff }) {
   const [formData, setFormData] = useState({
     department: "",
@@ -43,10 +46,9 @@ export default function Leave({ staff }) {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      const res = await axios.get(
-        "http://localhost:5000/api/leaves/my",
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const res = await axios.get(`${API_BASE}/api/leaves/my`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       setLeaveRequests(res.data);
     } catch (err) {
@@ -74,7 +76,7 @@ export default function Leave({ staff }) {
     try {
       setLoading(true);
       await axios.post(
-        "http://localhost:5000/api/leaves",
+        `${API_BASE}/api/leaves`,
         {
           staffName: staff.fullName,
           staffNumber: staff.staffNumber,
@@ -112,10 +114,9 @@ export default function Leave({ staff }) {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      const res = await axios.get(
-        `http://localhost:5000/api/leaves/view/${leaveId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const res = await axios.get(`${API_BASE}/api/leaves/view/${leaveId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       const newWindow = window.open("", "_blank");
       newWindow.document.write(res.data);
@@ -139,7 +140,7 @@ export default function Leave({ staff }) {
           maxWidth: "400px",
           display: "flex",
           flexDirection: "column",
-          gap: "6px", // tighter spacing
+          gap: "6px",
           fontSize: "11px",
         }}
       >
@@ -231,10 +232,7 @@ export default function Leave({ staff }) {
           style={{ fontSize: "11px" }}
         />
 
-        <button
-          disabled={loading}
-          style={{ fontSize: "11px", padding: "4px" }}
-        >
+        <button disabled={loading} style={{ fontSize: "11px", padding: "4px" }}>
           {loading ? "Submitting..." : "Submit Leave"}
         </button>
       </form>
