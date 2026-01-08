@@ -18,15 +18,22 @@ export default function StaffLogin({ onLogin }) {
 
     try {
       setLoading(true);
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
-        staffNumber: trimmedStaffNumber,
-        password: trimmedPassword,
-      });
 
-      // ✅ Store JWT token in localStorage for API requests
+      const res = await axios.post(
+        "https://spd-staff-portal-backend.onrender.com/api/auth/login",
+        {
+          staffNumber: trimmedStaffNumber,
+          password: trimmedPassword,
+        }
+      );
+
+      // ✅ Store JWT token
       localStorage.setItem("token", res.data.token);
 
-      // Pass staff info to parent component
+      // ✅ Store staff info (CRITICAL for correct dashboard after refresh)
+      localStorage.setItem("staff", JSON.stringify(res.data.staff));
+
+      // Pass staff info to App.jsx
       onLogin(res.data.staff);
     } catch (err) {
       console.error(err);
@@ -59,6 +66,7 @@ export default function StaffLogin({ onLogin }) {
           borderRadius: "50%",
         }}
       />
+
       <h2
         style={{
           color: "#654321",
@@ -83,6 +91,7 @@ export default function StaffLogin({ onLogin }) {
           fontSize: "16px",
         }}
       />
+
       <input
         type="password"
         placeholder="Password"
@@ -116,14 +125,12 @@ export default function StaffLogin({ onLogin }) {
             backgroundColor: "#A52A2A",
             color: "white",
             cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: "5px",
             fontWeight: "bold",
           }}
         >
           ➤ {loading ? "Signing In..." : "Sign In"}
         </button>
+
         <button
           onClick={() => alert("Forgot Password clicked")}
           style={{
@@ -133,9 +140,6 @@ export default function StaffLogin({ onLogin }) {
             backgroundColor: "#9F8170",
             color: "white",
             cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: "5px",
             fontWeight: "bold",
           }}
         >
