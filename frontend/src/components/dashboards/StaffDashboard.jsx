@@ -15,7 +15,7 @@ export default function StaffDashboard({ staff, onLogout }) {
     darkBrown: "#654321",
   };
 
-  // 🔹 Update isMobile on window resize
+  // Update isMobile on window resize
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 480);
     window.addEventListener("resize", handleResize);
@@ -198,6 +198,7 @@ export default function StaffDashboard({ staff, onLogout }) {
       <main style={{ width: "100%", padding: "12px" }}>
         {activePage === "welcome" && (
           <div
+            className="welcome-message"
             style={{
               display: "flex",
               justifyContent: "center",
@@ -209,7 +210,10 @@ export default function StaffDashboard({ staff, onLogout }) {
               borderRadius: "10px",
               textAlign: "center",
               background: `linear-gradient(to bottom right, ${spdColors.champagne}, ${spdColors.auburn}, ${spdColors.beaver}, ${spdColors.darkBrown})`,
-              animation: "fadeInScale 1.5s ease-out forwards",
+              animation: "fadeInScale 1.5s ease-out forwards, shimmer 10s linear infinite",
+              backgroundClip: "text",
+              WebkitBackgroundClip: "text",
+              color: "transparent",
             }}
           >
             Welcome to SPD Staff Portal
@@ -222,18 +226,21 @@ export default function StaffDashboard({ staff, onLogout }) {
       {/* Animation CSS */}
       <style>{`
         @keyframes fadeInScale {
-          0% {
-            opacity: 0;
-            transform: scale(0.8);
-          }
-          50% {
-            opacity: 0.6;
-            transform: scale(1.05);
-          }
-          100% {
-            opacity: 1;
-            transform: scale(1);
-          }
+          0% { opacity: 0; transform: scale(0.8); }
+          50% { opacity: 0.6; transform: scale(1.05); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes shimmer {
+          0% { background-position: -500px 0; }
+          100% { background-position: 500px 0; }
+        }
+
+        .welcome-message {
+          background: linear-gradient(90deg, #F7E7CE, #A52A2A, #9F8170, #654321);
+          background-size: 1000px 100%;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
         }
       `}</style>
     </div>
