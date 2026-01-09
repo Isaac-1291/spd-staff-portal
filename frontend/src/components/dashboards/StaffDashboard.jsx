@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import spdLogo from "../../assets/spd-logo.jpg";
 import Leave from "./Leave";
 
@@ -6,6 +6,7 @@ export default function StaffDashboard({ staff, onLogout }) {
   const [showLogout, setShowLogout] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activePage, setActivePage] = useState("welcome");
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 480);
 
   const spdColors = {
     champagne: "#F7E7CE",
@@ -14,15 +15,19 @@ export default function StaffDashboard({ staff, onLogout }) {
     darkBrown: "#654321",
   };
 
-  // 🔑 Detect mobile width to hide centered title
-  const isMobile = window.innerWidth <= 480;
+  // 🔹 Update isMobile on window resize
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 480);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <div
       style={{
         minHeight: "100vh",
         fontFamily: "Arial, sans-serif",
-        fontSize: "11px", // slightly smaller base font
+        fontSize: "11px",
         backgroundColor: spdColors.champagne,
       }}
     >
@@ -55,7 +60,7 @@ export default function StaffDashboard({ staff, onLogout }) {
               whiteSpace: "nowrap",
               overflow: "hidden",
               textOverflow: "ellipsis",
-              maxWidth: "120px", // prevents pushing menu off-screen
+              maxWidth: "120px",
             }}
           >
             {staff.fullName}
@@ -204,6 +209,7 @@ export default function StaffDashboard({ staff, onLogout }) {
               borderRadius: "10px",
               textAlign: "center",
               background: `linear-gradient(to bottom right, ${spdColors.champagne}, ${spdColors.auburn}, ${spdColors.beaver}, ${spdColors.darkBrown})`,
+              animation: "fadeInScale 1.5s ease-out forwards",
             }}
           >
             Welcome to SPD Staff Portal
@@ -212,6 +218,24 @@ export default function StaffDashboard({ staff, onLogout }) {
 
         {activePage === "leave" && <Leave staff={staff} />}
       </main>
+
+      {/* Animation CSS */}
+      <style>{`
+        @keyframes fadeInScale {
+          0% {
+            opacity: 0;
+            transform: scale(0.8);
+          }
+          50% {
+            opacity: 0.6;
+            transform: scale(1.05);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+      `}</style>
     </div>
   );
 }
