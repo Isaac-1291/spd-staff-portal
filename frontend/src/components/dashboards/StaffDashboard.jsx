@@ -14,12 +14,15 @@ export default function StaffDashboard({ staff, onLogout }) {
     darkBrown: "#654321",
   };
 
+  // 🔑 Detect mobile width to hide centered title
+  const isMobile = window.innerWidth <= 480;
+
   return (
     <div
       style={{
         minHeight: "100vh",
         fontFamily: "Arial, sans-serif",
-        fontSize: "11px", // 🔽 slightly smaller base font
+        fontSize: "11px", // slightly smaller base font
         backgroundColor: spdColors.champagne,
       }}
     >
@@ -29,7 +32,7 @@ export default function StaffDashboard({ staff, onLogout }) {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: "6px 10px", // 🔽 reduced padding
+          padding: "6px 10px",
           backgroundColor: spdColors.darkBrown,
           color: "#fff",
           borderBottom: "2px solid #4a2f1a",
@@ -52,7 +55,7 @@ export default function StaffDashboard({ staff, onLogout }) {
               whiteSpace: "nowrap",
               overflow: "hidden",
               textOverflow: "ellipsis",
-              maxWidth: "120px", // 🔑 prevents pushing menu off-screen
+              maxWidth: "120px", // prevents pushing menu off-screen
             }}
           >
             {staff.fullName}
@@ -82,20 +85,22 @@ export default function StaffDashboard({ staff, onLogout }) {
           </button>
         </div>
 
-        {/* Center title (auto shrink on phone) */}
-        <h1
-          style={{
-            position: "absolute",
-            left: "50%",
-            transform: "translateX(-50%)",
-            fontSize: "14px", // 🔽 reduced for phones
-            fontWeight: "bold",
-            margin: 0,
-            whiteSpace: "nowrap",
-          }}
-        >
-          SPD Staff Portal
-        </h1>
+        {/* Center title (hide on mobile) */}
+        {!isMobile && (
+          <h1
+            style={{
+              position: "absolute",
+              left: "50%",
+              transform: "translateX(-50%)",
+              fontSize: "14px",
+              fontWeight: "bold",
+              margin: 0,
+              whiteSpace: "nowrap",
+            }}
+          >
+            SPD Staff Portal
+          </h1>
+        )}
 
         {/* Right */}
         <div style={{ position: "relative" }}>
@@ -103,7 +108,7 @@ export default function StaffDashboard({ staff, onLogout }) {
             src={spdLogo}
             alt="SPD Logo"
             style={{
-              height: 32, // 🔽 smaller logo
+              height: 32,
               width: 32,
               borderRadius: "50%",
               cursor: "pointer",
@@ -192,7 +197,7 @@ export default function StaffDashboard({ staff, onLogout }) {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              fontSize: "18px", // 🔽 reduced for phone
+              fontSize: "18px",
               fontWeight: "bold",
               color: "white",
               height: "65vh",
