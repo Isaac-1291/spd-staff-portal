@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import spdLogo from "../../assets/spd-logo.jpg";
 
+// ✅ Use Vite env variable for backend URL
+const API_BASE = import.meta.env.VITE_API_URL;
+
 export default function HrOfficerDashboard({ staff, onLogout }) {
   const [leaveRequests, setLeaveRequests] = useState([]);
   const [showLogout, setShowLogout] = useState(false);
@@ -14,7 +17,7 @@ export default function HrOfficerDashboard({ staff, onLogout }) {
     if (!token) return;
 
     try {
-      const res = await axios.get("http://localhost:5000/api/leaves", {
+      const res = await axios.get(`${API_BASE}/api/leaves`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -49,7 +52,7 @@ export default function HrOfficerDashboard({ staff, onLogout }) {
       );
 
       await axios.put(
-        `http://localhost:5000/api/leaves/hr-officer/${id}`,
+        `${API_BASE}/api/leaves/hr-officer/${id}`,
         updatedFields,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -77,10 +80,9 @@ export default function HrOfficerDashboard({ staff, onLogout }) {
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      const res = await axios.get(
-        `http://localhost:5000/api/leaves/view/${leaveId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const res = await axios.get(`${API_BASE}/api/leaves/view/${leaveId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       const newWindow = window.open("", "_blank");
       newWindow.document.write(res.data);
@@ -97,7 +99,7 @@ export default function HrOfficerDashboard({ staff, onLogout }) {
         minHeight: "100vh",
         fontSize: "11px",
         overflowX: "hidden",
-        background: "#F7E7CE", // Champagne
+        background: "#F7E7CE",
       }}
     >
       {/* Header */}
@@ -108,14 +110,12 @@ export default function HrOfficerDashboard({ staff, onLogout }) {
           alignItems: "center",
           marginBottom: "6px",
           padding: "6px 10px",
-          background: "#654321", // Dark Brown
+          background: "#654321",
           color: "#fff",
           borderRadius: "4px",
         }}
       >
-        <h2 style={{ fontSize: "15px", margin: 0 }}>
-          HR Officer Dashboard
-        </h2>
+        <h2 style={{ fontSize: "15px", margin: 0 }}>HR Officer Dashboard</h2>
 
         <div style={{ position: "relative" }}>
           <img

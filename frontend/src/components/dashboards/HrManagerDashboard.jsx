@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import spdLogo from "../../assets/spd-logo.jpg";
 
+// ✅ Use Vite env variable for backend URL
+const API_BASE = import.meta.env.VITE_API_URL;
+
 export default function HrManagerDashboard({ staff, onLogout }) {
   const [showLogout, setShowLogout] = useState(false);
   const [leaveRequests, setLeaveRequests] = useState([]);
@@ -22,10 +25,9 @@ export default function HrManagerDashboard({ staff, onLogout }) {
     if (!token) return;
 
     try {
-      const res = await axios.get(
-        "http://localhost:5000/api/leaves/hr-manager",
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const res = await axios.get(`${API_BASE}/api/leaves/hr-manager`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setLeaveRequests(res.data);
     } catch (err) {
       console.error("Failed to fetch leaves:", err.response?.data || err.message);
@@ -45,7 +47,7 @@ export default function HrManagerDashboard({ staff, onLogout }) {
 
     try {
       await axios.put(
-        `http://localhost:5000/api/leaves/hr-manager/${id}`,
+        `${API_BASE}/api/leaves/hr-manager/${id}`,
         { status },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -64,10 +66,9 @@ export default function HrManagerDashboard({ staff, onLogout }) {
     if (!token) return;
 
     try {
-      const res = await axios.get(
-        `http://localhost:5000/api/leaves/view/${leaveId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const res = await axios.get(`${API_BASE}/api/leaves/view/${leaveId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       const newWindow = window.open("", "_blank");
       newWindow.document.write(res.data);
